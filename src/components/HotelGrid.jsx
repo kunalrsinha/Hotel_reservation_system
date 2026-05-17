@@ -10,7 +10,7 @@ export default function HotelGrid({ rooms }) {
   })).reverse();
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+    <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-md shadow-slate-200/70 sm:p-6">
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
@@ -25,15 +25,19 @@ export default function HotelGrid({ rooms }) {
         {roomsByFloor.map(({ floor, rooms: floorRooms }) => (
           <div
             key={floor}
-            className="grid gap-3 rounded-xl border border-slate-100 bg-slate-50 p-3 transition duration-200 hover:border-slate-200 hover:bg-white sm:grid-cols-[5rem_1fr] sm:items-center"
+            className="grid gap-3 rounded-xl border border-slate-100 bg-slate-50 p-3 transition-all duration-300 hover:border-slate-200 hover:bg-white hover:shadow-sm md:grid-cols-[5rem_5.75rem_1fr] md:items-center"
           >
-            <div className="flex items-center justify-between sm:block">
+            <div className="flex items-center justify-between md:block">
               <span className="text-sm font-bold text-slate-700">
                 Floor {floor}
               </span>
-              <span className="text-xs font-medium text-slate-400 sm:mt-1 sm:block">
+              <span className="text-xs font-medium text-slate-400 md:mt-1 md:block">
                 {floorRooms.length} rooms
               </span>
+            </div>
+
+            <div className="flex min-h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-center text-[0.68rem] font-black uppercase leading-tight tracking-wide text-slate-500 shadow-sm md:min-h-14">
+              Stairs / Lift
             </div>
 
             <div className="flex flex-wrap gap-2">

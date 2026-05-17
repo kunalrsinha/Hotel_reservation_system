@@ -3,6 +3,7 @@ import { MAX_ROOMS_PER_BOOKING } from "../constants/hotelConfig";
 export default function Controls({
   roomCount,
   onRoomCountChange,
+  onRoomCountBlur,
   onBook,
   onReset,
   onRandomOccupancy,
@@ -11,13 +12,13 @@ export default function Controls({
 }) {
   const parsedRoomCount = Number(roomCount);
   const isBookDisabled =
+    roomCount === "" ||
     !Number.isInteger(parsedRoomCount) ||
     parsedRoomCount < 1 ||
-    parsedRoomCount > MAX_ROOMS_PER_BOOKING ||
-    availableRoomsCount === 0;
+    parsedRoomCount > MAX_ROOMS_PER_BOOKING;
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-md shadow-slate-200/70">
       <div className="mb-5">
         <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
           Booking Controls
@@ -36,7 +37,8 @@ export default function Controls({
             max={MAX_ROOMS_PER_BOOKING}
             value={roomCount}
             onChange={(event) => onRoomCountChange(event.target.value)}
-            className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-base font-semibold text-slate-950 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+            onBlur={onRoomCountBlur}
+            className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-base font-semibold text-slate-950 shadow-sm outline-none transition-all duration-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
           />
           <span className="mt-2 block text-xs text-slate-500">
             Maximum {MAX_ROOMS_PER_BOOKING} rooms per booking.
@@ -54,21 +56,21 @@ export default function Controls({
             type="button"
             onClick={onBook}
             disabled={isBookDisabled}
-            className="min-h-12 rounded-xl bg-blue-600 px-3 py-2 text-sm font-bold leading-tight text-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-md disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+            className="min-h-12 rounded-xl bg-blue-600 px-3 py-2 text-sm font-bold leading-tight text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-md disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:opacity-60 disabled:shadow-none"
           >
             Book Rooms
           </button>
           <button
             type="button"
             onClick={onRandomOccupancy}
-            className="min-h-12 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-bold leading-tight text-slate-800 transition duration-200 hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50"
+            className="min-h-12 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-bold leading-tight text-slate-800 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 hover:shadow-md"
           >
             Random Occupancy
           </button>
           <button
             type="button"
             onClick={onReset}
-            className="min-h-12 rounded-xl border border-slate-300 bg-slate-950 px-3 py-2 text-sm font-bold leading-tight text-white transition duration-200 hover:-translate-y-0.5 hover:bg-slate-800"
+            className="min-h-12 rounded-xl border border-slate-300 bg-slate-950 px-3 py-2 text-sm font-bold leading-tight text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-md"
           >
             Reset Booking
           </button>
