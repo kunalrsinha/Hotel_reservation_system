@@ -184,9 +184,9 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="text-sm font-bold uppercase tracking-wide text-blue-700">
+              {/* <p className="text-sm font-bold uppercase tracking-wide text-blue-700">
                 Optimized Reservation Engine
-              </p>
+              </p> */}
               <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-5xl">
                 Hotel Room Reservation System
               </h1>
