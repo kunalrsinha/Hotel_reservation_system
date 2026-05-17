@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import BookingSummary from "../components/BookingSummary";
 import Controls from "../components/Controls";
@@ -9,6 +9,11 @@ import Legend from "../components/Legend";
 import { MAX_ROOMS_PER_BOOKING } from "../constants/hotelConfig";
 import { findOptimalRooms } from "../utils/bookingAlgorithm";
 import { generateRandomOccupancy, generateRooms } from "../utils/generateRooms";
+import {
+  clearReservationState,
+  loadReservationState,
+  saveReservationState,
+} from "../utils/storage";
 
 const emptySummary = {
   rooms: [],
@@ -43,11 +48,46 @@ export default function Home() {
   const [roomCount, setRoomCount] = useState("1");
   const [summary, setSummary] = useState(emptySummary);
   const [error, setError] = useState("");
+  const [isStorageReady, setIsStorageReady] = useState(false);
 
   const availableRoomsCount = useMemo(
     () => rooms.filter((room) => !room.occupied).length,
     [rooms],
   );
+
+  useEffect(() => {
+    let isMounted = true;
+
+    queueMicrotask(() => {
+      if (!isMounted) {
+        return;
+      }
+
+      const storedState = loadReservationState();
+
+      if (storedState) {
+        setRooms(storedState.rooms);
+        setSummary(storedState.bookingSummary);
+      }
+
+      setIsStorageReady(true);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isStorageReady) {
+      return;
+    }
+
+    saveReservationState({
+      rooms,
+      bookingSummary: summary,
+    });
+  }, [isStorageReady, rooms, summary]);
 
   const handleRoomCountChange = useCallback((value) => {
     setRoomCount(value);
@@ -120,6 +160,7 @@ export default function Home() {
   }, [roomCount, rooms]);
 
   const handleReset = useCallback(() => {
+    clearReservationState();
     setRooms(generateRooms());
     setSummary(emptySummary);
     setError("");
